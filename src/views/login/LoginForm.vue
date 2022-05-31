@@ -9,41 +9,81 @@ const switchMode = () => {
 </script>
 
 <template>
-  <h2 class="font-bold text-3xl text-gray-800">歡迎回來</h2>
+  <h2 class="font-bold text-3xl text-gray-800" v-if="isLogin">歡迎回來</h2>
+  <h2 class="font-bold text-3xl text-gray-800" v-else>註冊帳號</h2>
   <div class="flex items-center justify-center my-5 text-gray-300 space-x-2">
     <span class="h-[1px] w-16 bg-gray-200"></span>
-    <span>使用者登入</span>
+    <span v-if="isLogin">使用者登入</span>
+    <span v-else>填寫資料</span>
     <span class="h-[1px] w-16 bg-gray-200"></span>
   </div>
-  <form class="form w-[250px]">
-    <div class="form__group text-gray-400">
-      <input
-        type="email"
-        class="form__input"
-        placeholder="Email address"
-        id="email"
-        required
-      />
-      <label for="email" class="form__label">Email address</label>
-    </div>
-    <div class="form__group text-gray-400">
-      <input
-        type="password"
-        class="form__input"
-        placeholder="Password"
-        id="password"
-        required
-      />
-      <label for="password" class="form__label">Password</label>
-    </div>
-    <div class="form__group flex flex-col justify-center items-center">
-      <button class="form__btn" v-if="isLogin">登入</button>
-      <button class="form__btn" v-else>註冊帳號</button>
-      <!-- prettier-ignore -->
-      <span class="cursor-pointer" @click="switchMode" v-if="isLogin">註冊帳號</span>
-      <span class="cursor-pointer" @click="switchMode" v-else> 登入 </span>
-    </div>
-  </form>
+  <template v-if="isLogin">
+    <form class="form w-[250px]">
+      <div class="form__group text-gray-400">
+        <input
+          type="email"
+          class="form__input"
+          placeholder="Email address"
+          id="email"
+          required
+        />
+        <label for="email" class="form__label">Email address</label>
+      </div>
+      <div class="form__group text-gray-400">
+        <input
+          type="password"
+          class="form__input"
+          placeholder="Password"
+          id="password"
+          required
+        />
+        <label for="password" class="form__label">Password</label>
+      </div>
+      <div class="form__group flex flex-col justify-center items-center">
+        <button class="form__btn">登入</button>
+        <span class="cursor-pointer" @click="switchMode">註冊帳號</span>
+      </div>
+    </form>
+  </template>
+
+  <template v-else>
+    <form class="form w-[250px]">
+      <div class="form__group text-gray-400">
+        <input
+          type="email"
+          class="form__input"
+          placeholder="Email address"
+          id="email"
+          required
+        />
+        <label for="email" class="form__label">Email address</label>
+      </div>
+      <div class="form__group text-gray-400">
+        <input
+          type="text"
+          class="form__input"
+          placeholder="Nickname"
+          id="nickname"
+          required
+        />
+        <label for="nickname" class="form__label">Nickname</label>
+      </div>
+      <div class="form__group text-gray-400">
+        <input
+          type="password"
+          class="form__input"
+          placeholder="Password"
+          id="password"
+          required
+        />
+        <label for="password" class="form__label">Password</label>
+      </div>
+      <div class="form__group flex flex-col justify-center items-center">
+        <button class="form__btn">註冊帳號</button>
+        <span class="cursor-pointer" @click="switchMode">登入</span>
+      </div>
+    </form>
+  </template>
 </template>
 
 <style lang="scss" scoped>
