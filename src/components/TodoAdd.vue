@@ -1,9 +1,32 @@
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+
+const emit = defineEmits(['addTodo'])
+
+const todoContent = ref('')
+
+const emitAddTodo = () => {
+  const todo = {
+    id: new Date(),
+    content: todoContent.value,
+    completed: false
+  }
+
+  emit('addTodo', todo)
+  todoContent.value = ''
+}
+</script>
 
 <template>
   <div class="relative flex items-center">
-    <input type="text" name="todo" class="add-input" />
-    <button class="add-btn">
+    <input
+      type="text"
+      name="todo"
+      class="add-input"
+      v-model="todoContent"
+      @keyup.enter="emitAddTodo"
+    />
+    <button class="add-btn" @click="emitAddTodo">
       <i class="add-btn__plus"></i>
     </button>
   </div>

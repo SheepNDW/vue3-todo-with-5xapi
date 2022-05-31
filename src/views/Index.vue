@@ -1,7 +1,15 @@
 <script setup>
+import { provide } from 'vue'
 import TodoAdd from '@/components/TodoAdd.vue'
 import TodoFilter from '@/components/TodoFilter.vue'
 import TodoList from '@/components/TodoList.vue'
+import useFilteredTodos from '../hooks/useFilteredTodos'
+import useTodos from '../hooks/useTodos'
+
+const { todos, addTodo, deleteTodo } = useTodos()
+const { filter, filteredTodos } = useFilteredTodos(todos)
+
+provide('deleteTodo', { deleteTodo })
 </script>
 
 <template>
@@ -10,11 +18,11 @@ import TodoList from '@/components/TodoList.vue'
   >
     <div class="container">
       <h1 class="mx-0 my-6 text-[28px] text-[#414873]">Vue3 Todo App</h1>
-      <TodoAdd />
+      <TodoAdd @add-todo="addTodo" />
 
-      <TodoFilter />
+      <TodoFilter :selected="filter" @change-filter="filter = $event" />
 
-      <TodoList />
+      <TodoList :todos="filteredTodos" />
     </div>
   </main>
 </template>
@@ -26,8 +34,7 @@ import TodoList from '@/components/TodoList.vue'
 }
 
 .container {
-  @apply w-[60%] max-w-[400px] px-12 py-7 rounded-[1.5rem];
+  @apply w-[60%] max-w-[400px] px-12 py-7 rounded-[1.5rem] bg-[#f5f6fc];
   box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.15);
-  background-color: #f5f6fc;
 }
 </style>

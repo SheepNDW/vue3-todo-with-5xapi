@@ -1,10 +1,29 @@
-<script setup></script>
+<script setup>
+defineProps({
+  selected: {
+    type: String,
+    default: 'all'
+  }
+})
+
+const filters = [
+  { label: '全部', value: 'all' },
+  { label: '已完成', value: 'done' },
+  { label: '未完成', value: 'todo' }
+]
+</script>
 
 <template>
   <div class="filters">
-    <span class="filter active">全部</span>
-    <span class="filter">已完成</span>
-    <span class="filter">未完成</span>
+    <span
+      class="filter"
+      :class="{ active: selected === filter.value }"
+      v-for="filter in filters"
+      :key="filter.value"
+      @click="$emit('change-filter', filter.value)"
+    >
+      {{ filter.label }}
+    </span>
   </div>
 </template>
 
@@ -17,7 +36,8 @@
 
   .filter {
     margin-right: 14px;
-    transition: 0.8s;
+    transition: 0.5s;
+    cursor: pointer;
 
     &.active {
       color: #6b729c;
