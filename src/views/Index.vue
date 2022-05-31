@@ -6,10 +6,11 @@ import TodoList from '@/components/TodoList.vue'
 import useFilteredTodos from '../hooks/useFilteredTodos'
 import useTodos from '../hooks/useTodos'
 
-const { todos, addTodo, deleteTodo } = useTodos()
+const { todos, addTodo, deleteTodo, updateTodo } = useTodos()
 const { filter, filteredTodos } = useFilteredTodos(todos)
 
 provide('deleteTodo', { deleteTodo })
+provide('updateTodo', { updateTodo })
 </script>
 
 <template>

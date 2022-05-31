@@ -6,10 +6,16 @@ export default function useTodos() {
   const deleteTodo = (id) => {
     todos.value = todos.value.filter((todo) => todo.id !== id)
   }
+  const updateTodo = (id, content) => {
+    todos.value.forEach((todo) => {
+      if (todo.id === id) todo.content = content
+    })
+  }
 
   return {
     todos,
     addTodo,
-    deleteTodo
+    deleteTodo,
+    updateTodo
   }
 }

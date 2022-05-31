@@ -1,5 +1,5 @@
 <script setup>
-import { inject } from 'vue'
+import { inject, nextTick, ref } from 'vue'
 
 defineProps({
   todoItem: {
@@ -9,9 +9,22 @@ defineProps({
 })
 
 const { deleteTodo } = inject('deleteTodo')
+const { updateTodo } = inject('updateTodo')
 
 const handleDelete = (id) => {
   deleteTodo(id)
+}
+
+const inputRef = ref(null)
+const handleEdit = (todoItem) => {
+  todoItem.isEdit = true
+  nextTick(() => inputRef.value.focus())
+}
+
+const handleBlur = (todoItem, e) => {
+  todoItem.isEdit = false
+  if (!e.target.value.trim()) return alert('內容不得為空!')
+  updateTodo(todoItem.id, e.target.value)
 }
 </script>
 
@@ -25,10 +38,22 @@ const handleDelete = (id) => {
         @click="$emit('change-state', $event)"
       />
       <span class="todo-item__check-button"></span>
-      <span>{{ todoItem.content }}</span>
+      <span v-show="!todoItem.isEdit">{{ todoItem.content }}</span>
+      <input
+        v-show="todoItem.isEdit"
+        type="text"
+        :value="todoItem.content"
+        @blur="handleBlur(todoItem, $event)"
+        ref="inputRef"
+      />
     </label>
 
-    <i class="material-icons-outlined todo-item__icon mr-2">edit</i>
+    <i
+      v-show="!todoItem.isEdit"
+      class="material-icons-outlined todo-item__icon mr-2"
+      @click="handleEdit(todoItem)"
+      >edit</i
+    >
     <i
       class="material-icons-outlined todo-item__icon"
       @click="handleDelete(todoItem.id)"
