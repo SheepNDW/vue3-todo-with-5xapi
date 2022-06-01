@@ -1,5 +1,6 @@
 <script setup>
 import { provide } from 'vue'
+import TodoHeader from '@/components/TodoHeader.vue'
 import TodoAdd from '@/components/TodoAdd.vue'
 import TodoFilter from '@/components/TodoFilter.vue'
 import TodoList from '@/components/TodoList.vue'
@@ -25,11 +26,9 @@ getTodoList()
     v-if="checkSuccess"
   >
     <div class="container">
-      <h1 class="mx-0 my-6 text-[28px] text-[#414873]">Vue3 Todo App</h1>
+      <TodoHeader />
       <TodoAdd @add-todo="addTodo" />
-
       <TodoFilter :selected="filter" @change-filter="filter = $event" />
-
       <TodoList :todos="filteredTodos" />
     </div>
   </main>
@@ -42,7 +41,7 @@ getTodoList()
 }
 
 .container {
-  @apply w-[60%] max-w-[400px] px-12 py-7 rounded-[1.5rem] bg-[#f5f6fc];
+  @apply md:w-[60%] w-[85%] max-w-[400px] sm:px-12 px-8 py-7 rounded-[1.5rem] bg-[#f5f6fc];
   box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.15);
 }
 </style>
