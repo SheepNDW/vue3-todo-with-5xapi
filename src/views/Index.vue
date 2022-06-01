@@ -3,19 +3,26 @@ import { provide } from 'vue'
 import TodoAdd from '@/components/TodoAdd.vue'
 import TodoFilter from '@/components/TodoFilter.vue'
 import TodoList from '@/components/TodoList.vue'
-import useFilteredTodos from '../hooks/useFilteredTodos'
-import useTodos from '../hooks/useTodos'
+import useFilteredTodos from '@/hooks/useFilteredTodos'
+import useTodos from '@/hooks/useTodos'
+import useCheckAuth from '@/hooks/useCheckAuth'
 
-const { todos, addTodo, deleteTodo, updateTodo } = useTodos()
+const { todos, addTodo, deleteTodo, updateTodo, getTodoList } = useTodos()
 const { filter, filteredTodos } = useFilteredTodos(todos)
+const { checkSuccess, checkLogin } = useCheckAuth()
 
 provide('deleteTodo', { deleteTodo })
 provide('updateTodo', { updateTodo })
+
+// 初始化頁面
+checkLogin()
+getTodoList()
 </script>
 
 <template>
   <main
     class="w-[100vw] min-h-[100vh] flex justify-center items-center bg-violet-100"
+    v-if="checkSuccess"
   >
     <div class="container">
       <h1 class="mx-0 my-6 text-[28px] text-[#414873]">Vue3 Todo App</h1>

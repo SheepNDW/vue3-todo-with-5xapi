@@ -29,12 +29,12 @@ const handleBlur = (todoItem, e) => {
 </script>
 
 <template>
-  <div class="todo-item" :class="{ done: todoItem.completed }">
+  <div class="todo-item" :class="{ done: todoItem.completed_at }">
     <label class="relative flex items-center mr-auto">
       <input
         class="todo-item__checkbox"
         type="checkbox"
-        :checked="todoItem.completed"
+        :checked="todoItem.completed_at"
         @click="$emit('change-state', $event)"
       />
       <span class="todo-item__check-button"></span>

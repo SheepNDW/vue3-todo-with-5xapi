@@ -7,9 +7,7 @@ const todoContent = ref('')
 
 const emitAddTodo = () => {
   const todo = {
-    id: new Date(),
-    content: todoContent.value,
-    completed: false
+    content: todoContent.value
   }
 
   emit('addTodo', todo)

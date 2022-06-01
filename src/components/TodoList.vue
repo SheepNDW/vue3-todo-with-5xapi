@@ -1,5 +1,6 @@
 <script setup>
 import TodoListITem from './TodoListITem.vue'
+import useTodos from '@/hooks/useTodos'
 
 defineProps({
   todos: {
@@ -7,6 +8,13 @@ defineProps({
     default: () => []
   }
 })
+
+const { toggleTodo } = useTodos()
+
+const changeState = (todo, e) => {
+  todo.completed_at = e.target.checked
+  toggleTodo(todo.id)
+}
 </script>
 
 <template>
@@ -15,7 +23,7 @@ defineProps({
       v-for="todo in todos"
       :key="todo.id"
       :todo-item="todo"
-      @change-state="todo.completed = $event.target.checked"
+      @change-state="changeState(todo, $event)"
     />
   </div>
 </template>

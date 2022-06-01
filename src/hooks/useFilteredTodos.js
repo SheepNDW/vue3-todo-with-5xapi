@@ -5,9 +5,9 @@ export default function useFilteredTodos(todos) {
   const filteredTodos = computed(() => {
     switch (filter.value) {
       case 'done':
-        return todos.value.filter((todo) => todo.completed)
+        return todos.value.filter((todo) => todo.completed_at)
       case 'todo':
-        return todos.value.filter((todo) => !todo.completed)
+        return todos.value.filter((todo) => !todo.completed_at)
       default:
         return todos.value
     }
