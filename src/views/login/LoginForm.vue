@@ -1,10 +1,57 @@
 <script setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { signIn, signUp } from '@/api/users'
+
+const router = useRouter()
 
 const isLogin = ref(true)
-
 const switchMode = () => {
   isLogin.value = !isLogin.value
+}
+
+const loginInfo = reactive({
+  email: '',
+  password: ''
+})
+
+const signUpInfo = reactive({
+  email: '',
+  nickname: '',
+  password: ''
+})
+
+const handleSignUp = async () => {
+  if (
+    signUpInfo.password.length < 6 ||
+    signUpInfo.password.indexOf(' ') !== -1
+  ) {
+    return alert('密碼中不得有空格或少於 6 個字元')
+  }
+
+  try {
+    const data = await signUp(signUpInfo)
+    alert(data.message)
+
+    // 清空表單並切換至登入模式
+    signUpInfo.email = ''
+    signUpInfo.nickname = ''
+    signUpInfo.password = ''
+    isLogin.value = true
+  } catch (err) {
+    alert(err.response.data.error[0])
+  }
+}
+
+const handleSignIn = async () => {
+  try {
+    const res = await signIn(loginInfo)
+    const token = res.headers.authorization
+    localStorage.setItem('5xcampTodo', token)
+    router.push('/')
+  } catch (err) {
+    alert('帳號或密碼錯誤!')
+  }
 }
 </script>
 
@@ -18,7 +65,7 @@ const switchMode = () => {
     <span class="h-[1px] w-16 bg-gray-200"></span>
   </div>
   <template v-if="isLogin">
-    <form class="form w-[250px]">
+    <form class="form w-[250px]" @submit.prevent="handleSignIn">
       <div class="form__group text-gray-400">
         <input
           type="email"
@@ -26,6 +73,7 @@ const switchMode = () => {
           placeholder="Email address"
           id="email"
           required
+          v-model="loginInfo.email"
         />
         <label for="email" class="form__label">Email address</label>
       </div>
@@ -36,6 +84,7 @@ const switchMode = () => {
           placeholder="Password"
           id="password"
           required
+          v-model="loginInfo.password"
         />
         <label for="password" class="form__label">Password</label>
       </div>
@@ -47,7 +96,7 @@ const switchMode = () => {
   </template>
 
   <template v-else>
-    <form class="form w-[250px]">
+    <form class="form w-[250px]" @submit.prevent="handleSignUp">
       <div class="form__group text-gray-400">
         <input
           type="email"
@@ -55,6 +104,7 @@ const switchMode = () => {
           placeholder="Email address"
           id="email"
           required
+          v-model="signUpInfo.email"
         />
         <label for="email" class="form__label">Email address</label>
       </div>
@@ -65,6 +115,7 @@ const switchMode = () => {
           placeholder="Nickname"
           id="nickname"
           required
+          v-model="signUpInfo.nickname"
         />
         <label for="nickname" class="form__label">Nickname</label>
       </div>
@@ -75,6 +126,7 @@ const switchMode = () => {
           placeholder="Password"
           id="password"
           required
+          v-model="signUpInfo.password"
         />
         <label for="password" class="form__label">Password</label>
       </div>
