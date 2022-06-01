@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { start, close } from './nprogress'
 
 const baseURL = 'https://todoo.5xcamp.us'
 
@@ -9,6 +10,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
+    start()
     const token = localStorage.getItem('5xcampTodo')
     if (token) {
       config.headers.Authorization = token
@@ -23,9 +25,11 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (res) => {
+    close()
     return res.data
   },
   (err) => {
+    close()
     return Promise.reject(err)
   }
 )
