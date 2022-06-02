@@ -1,10 +1,13 @@
 # vue3-todo-with-5xapi
 
-實作一個有經典 CRUD 功能並含後端登入註冊的 Todo App
+實作一個有經典 CRUD 功能並含後端登入註冊的線上 Todo App
 
-![](https://i.imgur.com/YYzQ9Yj.png)
+[live demo](https://sheepndw.github.io/vue3-todo-with-5xapi/#/)
 
-代辦清單:
+<img src="https://i.imgur.com/YYzQ9Yj.png" height="400">
+
+
+開發清單:
 
 - [x]  靜態畫面
     - [x]  登入頁布局
