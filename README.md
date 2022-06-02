@@ -2,6 +2,8 @@
 
 實作一個有經典 CRUD 功能並含後端登入註冊的 Todo App
 
+![](https://i.imgur.com/YYzQ9Yj.png)
+
 代辦清單:
 
 - [x]  靜態畫面
@@ -22,7 +24,7 @@
 - [x] 配置路由守衛做預驗證
 - [x] 引入讀取效果 (NProgress)
 - [x] 增刪的動畫 (transition-group)
-- [ ] toast 提示效果
+- [x] toast 提示效果
 
 ## 使用技術
 
