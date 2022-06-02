@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { signIn, signUp } from '@/api/users'
+import Message from '@/components/toast-message/Message'
 
 const router = useRouter()
 
@@ -10,47 +11,65 @@ const switchMode = () => {
   isLogin.value = !isLogin.value
 }
 
-const loginInfo = reactive({
-  email: '',
-  password: ''
-})
+const { signUpInfo, handleSignUp } = useSignUp()
+const { loginInfo, handleSignIn } = useSignIn()
 
-const signUpInfo = reactive({
-  email: '',
-  nickname: '',
-  password: ''
-})
+function useSignUp() {
+  const signUpInfo = reactive({
+    email: '',
+    nickname: '',
+    password: ''
+  })
 
-const handleSignUp = async () => {
-  if (
-    signUpInfo.password.length < 6 ||
-    signUpInfo.password.indexOf(' ') !== -1
-  ) {
-    return alert('密碼中不得有空格或少於 6 個字元')
+  const handleSignUp = async () => {
+    if (
+      signUpInfo.password.length < 6 ||
+      signUpInfo.password.indexOf(' ') !== -1
+    ) {
+      return Message({ type: 'warn', text: '密碼不得有空格或少於 6 個字元' })
+    }
+
+    try {
+      const data = await signUp(signUpInfo)
+      Message({ type: 'success', text: data.message })
+
+      // 清空表單並切換至登入模式
+      signUpInfo.email = ''
+      signUpInfo.nickname = ''
+      signUpInfo.password = ''
+      isLogin.value = true
+    } catch (err) {
+      Message({ type: 'error', text: err.response.data.error[0] })
+    }
   }
 
-  try {
-    const data = await signUp(signUpInfo)
-    alert(data.message)
-
-    // 清空表單並切換至登入模式
-    signUpInfo.email = ''
-    signUpInfo.nickname = ''
-    signUpInfo.password = ''
-    isLogin.value = true
-  } catch (err) {
-    alert(err.response.data.error[0])
+  return {
+    signUpInfo,
+    handleSignUp
   }
 }
 
-const handleSignIn = async () => {
-  try {
-    const res = await signIn(loginInfo)
-    const token = res.headers.authorization
-    localStorage.setItem('5xcampTodo', token)
-    router.push('/')
-  } catch (err) {
-    alert('帳號或密碼錯誤!')
+function useSignIn() {
+  const loginInfo = reactive({
+    email: '',
+    password: ''
+  })
+
+  const handleSignIn = async () => {
+    try {
+      const res = await signIn(loginInfo)
+      const token = res.headers.authorization
+      localStorage.setItem('5xcampTodo', token)
+      router.push('/')
+      Message({ type: 'success', text: '歡迎回來!' })
+    } catch (err) {
+      Message({ text: '帳號或密碼錯誤!' })
+    }
+  }
+
+  return {
+    loginInfo,
+    handleSignIn
   }
 }
 </script>

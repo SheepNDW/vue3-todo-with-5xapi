@@ -1,5 +1,6 @@
 <script setup>
 import { inject, nextTick, ref } from 'vue'
+import Message from './toast-message/Message'
 
 defineProps({
   todoItem: {
@@ -23,7 +24,11 @@ const handleEdit = (todoItem) => {
 
 const handleBlur = (todoItem, e) => {
   todoItem.isEdit = false
-  if (!e.target.value.trim()) return alert('內容不得為空!')
+  if (!e.target.value.trim()) {
+    return Message({ type: 'warn', text: '內容不得為空!' })
+  }
+
+  if (todoItem.content === e.target.value) return
   updateTodo(todoItem.id, e.target.value)
 }
 </script>

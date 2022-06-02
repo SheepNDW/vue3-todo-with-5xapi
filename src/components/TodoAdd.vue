@@ -1,11 +1,16 @@
 <script setup>
 import { ref } from 'vue'
+import Message from './toast-message/Message'
 
 const emit = defineEmits(['addTodo'])
 
 const todoContent = ref('')
 
 const emitAddTodo = () => {
+  if (!todoContent.value.trim()) {
+    return Message({ type: 'warn', text: '你還沒輸入代辦事項啊!' })
+  }
+
   const todo = {
     content: todoContent.value
   }

@@ -6,18 +6,21 @@ import {
   getTodos,
   removeTodo
 } from '@/api/todos'
+import Message from '@/components/toast-message/Message'
 
 export default function useTodos() {
   const todos = ref([])
 
   const addTodo = async (todo) => {
     await createTodo(todo)
+    Message({ type: 'success', text: '新增成功!' })
     getTodoList()
   }
 
   const deleteTodo = async (id) => {
     todos.value = todos.value.filter((todo) => todo.id !== id)
     await removeTodo(id)
+    Message({ type: 'success', text: '刪除成功!' })
   }
 
   const updateTodo = async (id, content) => {
@@ -26,6 +29,7 @@ export default function useTodos() {
     })
 
     await changeTodoContent(id, content)
+    Message({ type: 'success', text: '修改成功!' })
   }
 
   const toggleTodo = async (id) => {
