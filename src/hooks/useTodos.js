@@ -12,9 +12,9 @@ export default function useTodos() {
   const todos = ref([])
 
   const addTodo = async (todo) => {
-    await createTodo(todo)
+    const data = await createTodo(todo)
+    todos.value.unshift({ ...data, complete_at: null })
     Message({ type: 'success', text: '新增成功!' })
-    getTodoList()
   }
 
   const deleteTodo = async (id) => {
